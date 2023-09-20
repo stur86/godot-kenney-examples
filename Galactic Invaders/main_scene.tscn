@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmcrk6u1jm1wk"]
+
+[ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
+
+[sub_resource type="GDScript" id="GDScript_jry5q"]
+script/source = "extends ParallaxBackground
+
+@export var scroll_speed = 300.0
+
+func _process(delta):
+	# The background is a tiled TextureRect, meaning the texture will
+	# repeat to fill the size of the rectangle (in this case, the whole screen).
+	#
+	# ParallaxBackground would follow the Camera2D if there was one, but absent
+	# that, we can set the scroll offset by hand.
+	#
+	# At this point, thanks to the \"mirror\" property on the ParallaxLayer, the
+	# background will be tiled in such a way that it looks like it scrolls
+	# forever.
+	scroll_offset += Vector2(0, scroll_speed*delta)
+"
+
+[node name="MainScene" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = SubResource("GDScript_jry5q")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1600, 900)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+offset_right = 1600.0
+offset_bottom = 900.0
+texture = ExtResource("1_p8b4e")
+stretch_mode = 1

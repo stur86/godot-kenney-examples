@@ -13,3 +13,8 @@ config_version=5
 config/name="Galactic Invaders"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
