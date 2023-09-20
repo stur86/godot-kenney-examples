@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmcrk6u1jm1wk"]
+[gd_scene load_steps=7 format=3 uid="uid://dmcrk6u1jm1wk"]
 
 [ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
+[ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_65fnk"]
 
 [sub_resource type="GDScript" id="GDScript_jry5q"]
 script/source = "extends ParallaxBackground
@@ -20,6 +21,41 @@ func _process(delta):
 	scroll_offset += Vector2(0, scroll_speed*delta)
 "
 
+[sub_resource type="GDScript" id="GDScript_2x3sk"]
+script/source = "extends CharacterBody2D
+
+@export var speed = 700.0
+@export var fire_reload = 0.3
+
+var reload_time = 0.0
+
+func _physics_process(delta):
+	
+	# Capture the movement; edges will stop us left and right	
+	var dx = Input.get_axis(\"MoveLeft\", \"MoveRight\")
+	move_and_collide(Vector2.RIGHT*speed*dx*delta)
+	
+	# Do we need to fire?
+	if reload_time <= 0.0:
+		if Input.is_action_pressed(\"Fire\"):
+			fire_gun()
+			reload_time = fire_reload
+	else:
+		# This makes reload time go towards zero so that it'll be ready
+		# to fire again in fire_reload seconds
+		reload_time = move_toward(reload_time, 0.0, delta)
+			
+func fire_gun():
+	print(\"FIRE!\")
+	
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
+size = Vector2(80, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pj81y"]
+size = Vector2(100, 200)
+
 [node name="MainScene" type="Node2D"]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -33,3 +69,26 @@ offset_right = 1600.0
 offset_bottom = 900.0
 texture = ExtResource("1_p8b4e")
 stretch_mode = 1
+
+[node name="PlayerShip" type="CharacterBody2D" parent="."]
+position = Vector2(800, 800)
+script = SubResource("GDScript_2x3sk")
+
+[node name="PlayerSprite" type="Sprite2D" parent="PlayerShip"]
+texture = ExtResource("2_65fnk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerShip"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_wmvxm")
+
+[node name="EdgeRight" type="StaticBody2D" parent="."]
+position = Vector2(1600, 800)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EdgeRight"]
+shape = SubResource("RectangleShape2D_pj81y")
+
+[node name="EdgeLeft" type="StaticBody2D" parent="."]
+position = Vector2(0, 800)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EdgeLeft"]
+shape = SubResource("RectangleShape2D_pj81y")
