@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmcrk6u1jm1wk"]
+[gd_scene load_steps=10 format=3 uid="uid://dmcrk6u1jm1wk"]
 
 [ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
 [ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_65fnk"]
 [ext_resource type="PackedScene" uid="uid://clvg3q88qthia" path="res://objects/player_laser/PlayerLaser.tscn" id="2_kpc0q"]
+[ext_resource type="Texture2D" uid="uid://b463rfs50uuvn" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserRed08.png" id="4_ipubs"]
 
 [sub_resource type="GDScript" id="GDScript_jry5q"]
 script/source = "extends ParallaxBackground
@@ -65,6 +66,10 @@ func fire_gun():
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
 size = Vector2(80, 25)
 
+[sub_resource type="Gradient" id="Gradient_3effx"]
+offsets = PackedFloat32Array(0, 0.774834, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pj81y"]
 size = Vector2(100, 200)
 
@@ -100,6 +105,26 @@ position = Vector2(46, -2)
 
 [node name="LeftGun" type="Node2D" parent="PlayerShip"]
 position = Vector2(-46, -2)
+
+[node name="Explosion" type="CPUParticles2D" parent="PlayerShip"]
+emitting = false
+amount = 40
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+texture = ExtResource("4_ipubs")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+angular_velocity_min = 1.0
+angular_velocity_max = 10.0
+damping_min = 100.0
+damping_max = 100.0
+angle_max = 360.0
+scale_amount_min = 0.1
+scale_amount_max = 0.5
+color_ramp = SubResource("Gradient_3effx")
 
 [node name="EdgeRight" type="StaticBody2D" parent="."]
 position = Vector2(1600, 800)
