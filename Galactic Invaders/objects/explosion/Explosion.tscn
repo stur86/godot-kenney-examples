@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://d28m05bkethcl"]
+
+[ext_resource type="Texture2D" uid="uid://b463rfs50uuvn" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserRed08.png" id="1_0wny0"]
+[ext_resource type="Script" path="res://objects/explosion/Explosion.gd" id="2_ihai2"]
+
+[sub_resource type="Gradient" id="Gradient_3effx"]
+offsets = PackedFloat32Array(0, 0.774834, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Explosion" type="CPUParticles2D"]
+emitting = false
+amount = 40
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+texture = ExtResource("1_0wny0")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+angular_velocity_min = 1.0
+angular_velocity_max = 10.0
+damping_min = 100.0
+damping_max = 100.0
+angle_max = 360.0
+scale_amount_min = 0.1
+scale_amount_max = 0.5
+color_ramp = SubResource("Gradient_3effx")
+script = ExtResource("2_ihai2")

@@ -3,12 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
 [ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_65fnk"]
 [ext_resource type="PackedScene" uid="uid://clvg3q88qthia" path="res://objects/player_laser/PlayerLaser.tscn" id="2_kpc0q"]
-[ext_resource type="Texture2D" uid="uid://b463rfs50uuvn" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserRed08.png" id="4_ipubs"]
+[ext_resource type="PackedScene" uid="uid://d28m05bkethcl" path="res://objects/explosion/Explosion.tscn" id="4_enj6r"]
+[ext_resource type="PackedScene" uid="uid://dsc2bdg4lxlb3" path="res://objects/enemy_ship/EnemyShip.tscn" id="5_wtx5a"]
 
 [sub_resource type="GDScript" id="GDScript_jry5q"]
 script/source = "extends ParallaxBackground
 
-@export var scroll_speed = 300.0
+@export var scroll_speed := 300.0
 
 func _process(delta):
 	# The background is a tiled TextureRect, meaning the texture will
@@ -26,8 +27,8 @@ func _process(delta):
 [sub_resource type="GDScript" id="GDScript_2x3sk"]
 script/source = "extends CharacterBody2D
 
-@export var speed = 700.0
-@export var fire_reload = 0.3
+@export var speed := 700.0
+@export var fire_reload := 0.3
 @export var bullet_base: PackedScene
 
 var reload_time = 0.0
@@ -36,7 +37,9 @@ func _physics_process(delta):
 	
 	# Capture the movement; edges will stop us left and right	
 	var dx = Input.get_axis(\"MoveLeft\", \"MoveRight\")
-	move_and_collide(Vector2.RIGHT*speed*dx*delta)
+	#move_and_collide(Vector2.RIGHT*speed*dx*delta)
+	velocity = Vector2.RIGHT*speed*dx
+	move_and_slide()
 	
 	# Do we need to fire?
 	if reload_time <= 0.0:
@@ -66,10 +69,6 @@ func fire_gun():
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
 size = Vector2(80, 25)
 
-[sub_resource type="Gradient" id="Gradient_3effx"]
-offsets = PackedFloat32Array(0, 0.774834, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pj81y"]
 size = Vector2(100, 200)
 
@@ -89,7 +88,7 @@ stretch_mode = 1
 
 [node name="PlayerShip" type="CharacterBody2D" parent="."]
 position = Vector2(800, 800)
-collision_mask = 12
+collision_mask = 28
 script = SubResource("GDScript_2x3sk")
 bullet_base = ExtResource("2_kpc0q")
 
@@ -106,34 +105,92 @@ position = Vector2(46, -2)
 [node name="LeftGun" type="Node2D" parent="PlayerShip"]
 position = Vector2(-46, -2)
 
-[node name="Explosion" type="CPUParticles2D" parent="PlayerShip"]
-emitting = false
-amount = 40
-lifetime = 0.7
-one_shot = true
-explosiveness = 0.8
-texture = ExtResource("4_ipubs")
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 150.0
-initial_velocity_max = 200.0
-angular_velocity_min = 1.0
-angular_velocity_max = 10.0
-damping_min = 100.0
-damping_max = 100.0
-angle_max = 360.0
-scale_amount_min = 0.1
-scale_amount_max = 0.5
-color_ramp = SubResource("Gradient_3effx")
+[node name="Explosion" parent="PlayerShip" instance=ExtResource("4_enj6r")]
 
 [node name="EdgeRight" type="StaticBody2D" parent="."]
 position = Vector2(1600, 800)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EdgeRight"]
 shape = SubResource("RectangleShape2D_pj81y")
 
 [node name="EdgeLeft" type="StaticBody2D" parent="."]
 position = Vector2(0, 800)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EdgeLeft"]
 shape = SubResource("RectangleShape2D_pj81y")
+
+[node name="EnemyFormation" type="Node2D" parent="."]
+position = Vector2(800, 100)
+
+[node name="Row" type="Node2D" parent="EnemyFormation"]
+
+[node name="EnemyShip" parent="EnemyFormation/Row" instance=ExtResource("5_wtx5a")]
+position = Vector2(-225, 0)
+color_type = 3
+
+[node name="EnemyShip2" parent="EnemyFormation/Row" instance=ExtResource("5_wtx5a")]
+position = Vector2(-75, 0)
+color_type = 3
+
+[node name="EnemyShip3" parent="EnemyFormation/Row" instance=ExtResource("5_wtx5a")]
+position = Vector2(75, 0)
+color_type = 3
+
+[node name="EnemyShip4" parent="EnemyFormation/Row" instance=ExtResource("5_wtx5a")]
+position = Vector2(225, 0)
+color_type = 3
+
+[node name="Row2" type="Node2D" parent="EnemyFormation"]
+position = Vector2(0, 100)
+
+[node name="EnemyShip" parent="EnemyFormation/Row2" instance=ExtResource("5_wtx5a")]
+position = Vector2(-225, 0)
+color_type = 2
+
+[node name="EnemyShip2" parent="EnemyFormation/Row2" instance=ExtResource("5_wtx5a")]
+position = Vector2(-75, 0)
+color_type = 2
+
+[node name="EnemyShip3" parent="EnemyFormation/Row2" instance=ExtResource("5_wtx5a")]
+position = Vector2(75, 0)
+color_type = 2
+
+[node name="EnemyShip4" parent="EnemyFormation/Row2" instance=ExtResource("5_wtx5a")]
+position = Vector2(225, 0)
+color_type = 2
+
+[node name="Row3" type="Node2D" parent="EnemyFormation"]
+position = Vector2(0, 200)
+
+[node name="EnemyShip" parent="EnemyFormation/Row3" instance=ExtResource("5_wtx5a")]
+position = Vector2(-225, 0)
+color_type = 1
+
+[node name="EnemyShip2" parent="EnemyFormation/Row3" instance=ExtResource("5_wtx5a")]
+position = Vector2(-75, 0)
+color_type = 1
+
+[node name="EnemyShip3" parent="EnemyFormation/Row3" instance=ExtResource("5_wtx5a")]
+position = Vector2(75, 0)
+color_type = 1
+
+[node name="EnemyShip4" parent="EnemyFormation/Row3" instance=ExtResource("5_wtx5a")]
+position = Vector2(225, 0)
+color_type = 1
+
+[node name="Row4" type="Node2D" parent="EnemyFormation"]
+position = Vector2(0, 300)
+
+[node name="EnemyShip" parent="EnemyFormation/Row4" instance=ExtResource("5_wtx5a")]
+position = Vector2(-225, 0)
+
+[node name="EnemyShip2" parent="EnemyFormation/Row4" instance=ExtResource("5_wtx5a")]
+position = Vector2(-75, 0)
+
+[node name="EnemyShip3" parent="EnemyFormation/Row4" instance=ExtResource("5_wtx5a")]
+position = Vector2(75, 0)
+
+[node name="EnemyShip4" parent="EnemyFormation/Row4" instance=ExtResource("5_wtx5a")]
+position = Vector2(225, 0)
