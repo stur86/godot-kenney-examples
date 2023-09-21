@@ -39,3 +39,10 @@ Fire={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":5,"axis_value":1.0,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="PlayerBullets"
+2d_physics/layer_3="Enemies"
+2d_physics/layer_4="EnemyBullets"

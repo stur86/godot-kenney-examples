@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmcrk6u1jm1wk"]
+[gd_scene load_steps=8 format=3 uid="uid://dmcrk6u1jm1wk"]
 
 [ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
 [ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_65fnk"]
+[ext_resource type="PackedScene" uid="uid://clvg3q88qthia" path="res://objects/player_laser/PlayerLaser.tscn" id="2_kpc0q"]
 
 [sub_resource type="GDScript" id="GDScript_jry5q"]
 script/source = "extends ParallaxBackground
@@ -26,6 +27,7 @@ script/source = "extends CharacterBody2D
 
 @export var speed = 700.0
 @export var fire_reload = 0.3
+@export var bullet_base: PackedScene
 
 var reload_time = 0.0
 
@@ -46,8 +48,18 @@ func _physics_process(delta):
 		reload_time = move_toward(reload_time, 0.0, delta)
 			
 func fire_gun():
-	print(\"FIRE!\")
 	
+	# We instantiate two bullets; the nodes LeftGun and RightGun
+	# control the firing positions
+	
+	var bl = bullet_base.instantiate()
+	var br = bullet_base.instantiate()
+	
+	add_sibling(bl)
+	add_sibling(br)
+	
+	bl.global_position = $LeftGun.global_position
+	br.global_position = $RightGun.global_position
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
@@ -62,7 +74,7 @@ size = Vector2(100, 200)
 script = SubResource("GDScript_jry5q")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2(1600, 900)
+motion_mirroring = Vector2(0, 900)
 
 [node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
 offset_right = 1600.0
@@ -72,7 +84,9 @@ stretch_mode = 1
 
 [node name="PlayerShip" type="CharacterBody2D" parent="."]
 position = Vector2(800, 800)
+collision_mask = 12
 script = SubResource("GDScript_2x3sk")
+bullet_base = ExtResource("2_kpc0q")
 
 [node name="PlayerSprite" type="Sprite2D" parent="PlayerShip"]
 texture = ExtResource("2_65fnk")
@@ -80,6 +94,12 @@ texture = ExtResource("2_65fnk")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerShip"]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_wmvxm")
+
+[node name="RightGun" type="Node2D" parent="PlayerShip"]
+position = Vector2(46, -2)
+
+[node name="LeftGun" type="Node2D" parent="PlayerShip"]
+position = Vector2(-46, -2)
 
 [node name="EdgeRight" type="StaticBody2D" parent="."]
 position = Vector2(1600, 800)
