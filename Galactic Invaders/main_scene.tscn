@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmcrk6u1jm1wk"]
+[gd_scene load_steps=8 format=3 uid="uid://dmcrk6u1jm1wk"]
 
 [ext_resource type="Texture2D" uid="uid://cw41w1djx7lxs" path="res://KenneySpaceShooterRedux/Backgrounds/darkPurple.png" id="1_p8b4e"]
-[ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_65fnk"]
-[ext_resource type="PackedScene" uid="uid://clvg3q88qthia" path="res://objects/player_laser/PlayerLaser.tscn" id="2_kpc0q"]
-[ext_resource type="PackedScene" uid="uid://d28m05bkethcl" path="res://objects/explosion/Explosion.tscn" id="4_enj6r"]
+[ext_resource type="PackedScene" uid="uid://baudy84haudhi" path="res://objects/player_ship/PlayerShip.tscn" id="2_44j5d"]
+[ext_resource type="Script" path="res://objects/ui/Lives.gd" id="4_j6nya"]
+[ext_resource type="PackedScene" uid="uid://bj5uv7sa5k3pi" path="res://objects/ui/LifeCounter.tscn" id="5_lxij5"]
 [ext_resource type="PackedScene" uid="uid://dsc2bdg4lxlb3" path="res://objects/enemy_ship/EnemyShip.tscn" id="5_wtx5a"]
 
 [sub_resource type="GDScript" id="GDScript_jry5q"]
@@ -24,54 +24,6 @@ func _process(delta):
 	scroll_offset += Vector2(0, scroll_speed*delta)
 "
 
-[sub_resource type="GDScript" id="GDScript_2x3sk"]
-script/source = "extends CharacterBody2D
-
-@export var speed := 700.0
-@export var fire_reload := 0.3
-@export var bullet_base: PackedScene
-
-var reload_time = 0.0
-
-func _physics_process(delta):
-	
-	# Capture the movement; edges will stop us left and right	
-	var dx = Input.get_axis(\"MoveLeft\", \"MoveRight\")
-	#move_and_collide(Vector2.RIGHT*speed*dx*delta)
-	velocity = Vector2.RIGHT*speed*dx
-	move_and_slide()
-	
-	# Do we need to fire?
-	if reload_time <= 0.0:
-		if Input.is_action_pressed(\"Fire\"):
-			fire_gun()
-			reload_time = fire_reload
-	else:
-		# This makes reload time go towards zero so that it'll be ready
-		# to fire again in fire_reload seconds
-		reload_time = move_toward(reload_time, 0.0, delta)
-			
-func fire_gun():
-	
-	# We instantiate two bullets; the nodes LeftGun and RightGun
-	# control the firing positions
-	
-	var bl = bullet_base.instantiate()
-	var br = bullet_base.instantiate()
-	
-	add_sibling(bl)
-	add_sibling(br)
-	
-	bl.global_position = $LeftGun.global_position
-	br.global_position = $RightGun.global_position
-
-func lose_life():
-	print(\"Lost a life\")
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
-size = Vector2(80, 25)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pj81y"]
 size = Vector2(100, 200)
 
@@ -89,26 +41,7 @@ offset_bottom = 900.0
 texture = ExtResource("1_p8b4e")
 stretch_mode = 1
 
-[node name="PlayerShip" type="CharacterBody2D" parent="."]
-position = Vector2(800, 800)
-collision_mask = 28
-script = SubResource("GDScript_2x3sk")
-bullet_base = ExtResource("2_kpc0q")
-
-[node name="PlayerSprite" type="Sprite2D" parent="PlayerShip"]
-texture = ExtResource("2_65fnk")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerShip"]
-position = Vector2(0, 10)
-shape = SubResource("RectangleShape2D_wmvxm")
-
-[node name="RightGun" type="Node2D" parent="PlayerShip"]
-position = Vector2(46, -2)
-
-[node name="LeftGun" type="Node2D" parent="PlayerShip"]
-position = Vector2(-46, -2)
-
-[node name="Explosion" parent="PlayerShip" instance=ExtResource("4_enj6r")]
+[node name="PlayerShip" parent="." instance=ExtResource("2_44j5d")]
 
 [node name="EdgeRight" type="StaticBody2D" parent="."]
 position = Vector2(1600, 800)
@@ -197,3 +130,14 @@ position = Vector2(75, 0)
 
 [node name="EnemyShip4" parent="EnemyFormation/Row4" instance=ExtResource("5_wtx5a")]
 position = Vector2(225, 0)
+
+[node name="UI Canvas" type="CanvasLayer" parent="."]
+
+[node name="Lives" type="HBoxContainer" parent="UI Canvas"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 127.0
+offset_bottom = 60.0
+theme_override_constants/separation = 15
+script = ExtResource("4_j6nya")
+life_base = ExtResource("5_lxij5")

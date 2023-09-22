@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj5uv7sa5k3pi"]
+
+[ext_resource type="Texture2D" uid="uid://dna66ofgnc6yy" path="res://KenneySpaceShooterRedux/PNG/UI/playerLife1_green.png" id="1_s1p23"]
+
+[node name="LifeIndicator" type="TextureRect"]
+texture = ExtResource("1_s1p23")

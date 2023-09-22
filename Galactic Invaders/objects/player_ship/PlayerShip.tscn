@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://baudy84haudhi"]
+
+[ext_resource type="PackedScene" uid="uid://clvg3q88qthia" path="res://objects/player_laser/PlayerLaser.tscn" id="1_qp0rc"]
+[ext_resource type="Script" path="res://objects/player_ship/PlayerShip.gd" id="1_vdc0g"]
+[ext_resource type="Texture2D" uid="uid://hay08tm711ev" path="res://KenneySpaceShooterRedux/PNG/playerShip1_green.png" id="2_082nq"]
+[ext_resource type="PackedScene" uid="uid://d28m05bkethcl" path="res://objects/explosion/Explosion.tscn" id="3_x3f6t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]
+size = Vector2(80, 25)
+
+[node name="PlayerShip" type="CharacterBody2D"]
+position = Vector2(800, 800)
+collision_mask = 28
+script = ExtResource("1_vdc0g")
+bullet_base = ExtResource("1_qp0rc")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_082nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_wmvxm")
+
+[node name="RightGun" type="Node2D" parent="."]
+position = Vector2(46, -2)
+
+[node name="LeftGun" type="Node2D" parent="."]
+position = Vector2(-46, -2)
+
+[node name="Explosion" parent="." instance=ExtResource("3_x3f6t")]
+
+[node name="RevivalTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="RevivalTimer" to="." method="revive"]

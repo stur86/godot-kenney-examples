@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var horizontal_shift := 200
 @export var vertical_step := 60
 @export var bullet_drop_rate := 1.0/20.0
+@export var bullet_base : PackedScene
 @export_enum("Red", "Blue", "Green", "Black") var color_type := 0
 
 var horizontal_dir := 1
@@ -17,8 +18,6 @@ const type_textures = [
 	preload("res://KenneySpaceShooterRedux/PNG/Enemies/enemyGreen3.png"),
 	preload("res://KenneySpaceShooterRedux/PNG/Enemies/enemyBlack3.png")	
 ]
-# Bullet packed scene
-const Bullet = preload("res://objects/enemy_bullet/EnemyBullet.tscn")
 
 func _ready():
 	$Sprite2D.texture = type_textures[color_type]
@@ -62,6 +61,6 @@ func destroy():
 	# the whole node once the explosion is over
 
 func fire_bullet():
-	var b = Bullet.instantiate()
+	var b = bullet_base.instantiate()
 	add_sibling(b)
 	b.global_position = global_position

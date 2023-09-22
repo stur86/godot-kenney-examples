@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dsc2bdg4lxlb3"]
+[gd_scene load_steps=7 format=3 uid="uid://dsc2bdg4lxlb3"]
 
 [ext_resource type="Script" path="res://objects/enemy_ship/EnemyShip.gd" id="1_hdad3"]
 [ext_resource type="Texture2D" uid="uid://d100xd6mt1xef" path="res://KenneySpaceShooterRedux/PNG/Enemies/enemyRed3.png" id="1_hxgnj"]
+[ext_resource type="PackedScene" uid="uid://bcjyyon166ved" path="res://objects/enemy_bullet/EnemyBullet.tscn" id="2_nym6u"]
 [ext_resource type="PackedScene" uid="uid://d28m05bkethcl" path="res://objects/explosion/Explosion.tscn" id="3_vpy0p"]
 [ext_resource type="Texture2D" uid="uid://bd5moqk66rc2x" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserBlue11.png" id="4_b887a"]
 
@@ -13,6 +14,7 @@ collision_layer = 4
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_hdad3")
+bullet_base = ExtResource("2_nym6u")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
