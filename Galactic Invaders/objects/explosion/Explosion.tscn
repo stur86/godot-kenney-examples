@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d28m05bkethcl"]
+[gd_scene load_steps=5 format=3 uid="uid://d28m05bkethcl"]
 
 [ext_resource type="Texture2D" uid="uid://b463rfs50uuvn" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserRed08.png" id="1_0wny0"]
 [ext_resource type="Script" path="res://objects/explosion/Explosion.gd" id="2_ihai2"]
+[ext_resource type="AudioStream" uid="uid://ex77oha778ax" path="res://KenneySciFiSounds/lowFrequency_explosion_001.ogg" id="3_2frn1"]
 
 [sub_resource type="Gradient" id="Gradient_3effx"]
 offsets = PackedFloat32Array(0, 0.774834, 1)
@@ -27,3 +28,6 @@ scale_amount_min = 0.1
 scale_amount_max = 0.5
 color_ramp = SubResource("Gradient_3effx")
 script = ExtResource("2_ihai2")
+
+[node name="BoomSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2frn1")

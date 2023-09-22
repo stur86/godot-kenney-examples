@@ -39,6 +39,9 @@ func fire_gun():
 	
 	bl.global_position = $LeftGun.global_position
 	br.global_position = $RightGun.global_position
+	
+	# Play sound
+	$LaserSound.play()
 
 func lose_life():
 	if alive:
