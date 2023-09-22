@@ -9,7 +9,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6tife"]
 size = Vector2(40, 60)
 
-[node name="EnemyShip" type="CharacterBody2D"]
+[node name="EnemyShip" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 4
 collision_mask = 3
 motion_mode = 1
@@ -30,4 +30,5 @@ texture = ExtResource("4_b887a")
 [node name="DeathTimer" type="Timer" parent="."]
 one_shot = true
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="timeout" from="DeathTimer" to="." method="queue_free"]

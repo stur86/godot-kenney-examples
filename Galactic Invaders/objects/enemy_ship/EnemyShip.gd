@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var horizontal_shift := 200
 @export var vertical_step := 60
 @export var bullet_drop_rate := 1.0/20.0
+@export var score_value := 100
 @export var bullet_base : PackedScene
 @export_enum("Red", "Blue", "Green", "Black") var color_type := 0
 
@@ -60,7 +61,15 @@ func destroy():
 	# The timeout() signal will eventually destroy
 	# the whole node once the explosion is over
 
+	# Add the score value
+	GameMaster.score += score_value
+
 func fire_bullet():
 	var b = bullet_base.instantiate()
 	add_sibling(b)
 	b.global_position = global_position
+
+
+func _on_tree_exited():
+	# Report destruction
+	GameMaster.check_game()
