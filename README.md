@@ -6,3 +6,9 @@ A few example Godot projects made with the Kenney assets. I've tried to make the
 ![Galactic Invaders screenshot](./screenshots/galactic_invaders_1.png)
 
 A standard, simple, single-scene Space Invaders clone using the Kenney Space Shooter Redux and Sci-Fi Sounds asset packs. Provides good examples of using character bodies, signals, timers, particle effects, sound effects, autoload singletons, and a few other common features, as well as a template for organising your project.
+
+Controls:
+
+Move with Left and Right arrows or left stick of gamepad
+Fire with Space Bar or right trigger of gamepad
+Restart with R or start button of gamepad
