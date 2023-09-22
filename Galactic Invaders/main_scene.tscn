@@ -64,6 +64,9 @@ func fire_gun():
 	
 	bl.global_position = $LeftGun.global_position
 	br.global_position = $RightGun.global_position
+
+func lose_life():
+	print(\"Lost a life\")
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmvxm"]

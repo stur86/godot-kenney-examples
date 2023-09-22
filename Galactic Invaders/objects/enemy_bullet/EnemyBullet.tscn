@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcjyyon166ved"]
+
+[ext_resource type="Texture2D" uid="uid://582p7dtff0sw" path="res://KenneySpaceShooterRedux/PNG/Lasers/laserGreen14.png" id="1_b7jfv"]
+[ext_resource type="Script" path="res://objects/enemy_bullet/EnemyBullet.gd" id="1_l2wb4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_myxdq"]
+radius = 16.0
+
+[node name="EnemyBullet" type="CharacterBody2D"]
+collision_layer = 8
+motion_mode = 1
+script = ExtResource("1_l2wb4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_b7jfv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_myxdq")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-40, -40, 80, 80)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]
